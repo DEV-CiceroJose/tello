@@ -1,0 +1,495 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Assumed data model:
+    // - Public catalogs are authenticated read-only.
+    // - Profile, conversations, plans, artifacts and learning records live below
+    //   users/{uid}. Authorization always comes from request.auth.uid.
+    // - attempts are immutable answer events.
+    // - skillMastery contains one validated aggregate per skill.
+    // - progressEvents are immutable diagnostic/training timeline entries.
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isAuthenticated() && request.auth.uid == uid;
+    }
+
+    function isTeacher() {
+      return isAuthenticated() && request.auth.token.teacher == true;
+    }
+
+    function hasOnly(data, fields) {
+      return data.keys().hasOnly(fields);
+    }
+
+    function validShortString(value, maxSize) {
+      return value is string && value.size() > 0 && value.size() <= maxSize;
+    }
+
+    function validOptionalString(data, field, maxSize) {
+      return !(field in data) || (data[field] is string && data[field].size() <= maxSize);
+    }
+
+    function validRecentCreate(data) {
+      return data.createdAt == request.time;
+    }
+
+    function validStringListItem(values, index, maxSize) {
+      return values.size() <= index || validShortString(values[index], maxSize);
+    }
+
+    function validAttachmentIds(data) {
+      return !('attachmentIds' in data)
+        || (data.attachmentIds is list
+          && data.attachmentIds.size() <= 5
+          && validStringListItem(data.attachmentIds, 0, 128)
+          && validStringListItem(data.attachmentIds, 1, 128)
+          && validStringListItem(data.attachmentIds, 2, 128)
+          && validStringListItem(data.attachmentIds, 3, 128)
+          && validStringListItem(data.attachmentIds, 4, 128));
+    }
+
+    function validAvailableDays(values) {
+      return values is list
+        && values.size() > 0
+        && values.size() <= 7
+        && validStringListItem(values, 0, 32)
+        && validStringListItem(values, 1, 32)
+        && validStringListItem(values, 2, 32)
+        && validStringListItem(values, 3, 32)
+        && validStringListItem(values, 4, 32)
+        && validStringListItem(values, 5, 32)
+        && validStringListItem(values, 6, 32);
+    }
+
+    function validPriorityTopics(data) {
+      return !('priorityTopics' in data)
+        || (data.priorityTopics is list
+          && data.priorityTopics.size() <= 10
+          && validStringListItem(data.priorityTopics, 0, 160)
+          && validStringListItem(data.priorityTopics, 1, 160)
+          && validStringListItem(data.priorityTopics, 2, 160)
+          && validStringListItem(data.priorityTopics, 3, 160)
+          && validStringListItem(data.priorityTopics, 4, 160)
+          && validStringListItem(data.priorityTopics, 5, 160)
+          && validStringListItem(data.priorityTopics, 6, 160)
+          && validStringListItem(data.priorityTopics, 7, 160)
+          && validStringListItem(data.priorityTopics, 8, 160)
+          && validStringListItem(data.priorityTopics, 9, 160));
+    }
+
+    function validStudySession(session) {
+      return session is map
+        && session.keys().hasOnly([
+          'id', 'day', 'week', 'topic', 'minutes', 'activity', 'completed'
+        ])
+        && validShortString(session.id, 128)
+        && validShortString(session.day, 32)
+        && session.week is int
+        && session.week >= 1
+        && session.week <= 53
+        && validShortString(session.topic, 160)
+        && session.minutes is int
+        && session.minutes >= 10
+        && session.minutes <= 600
+        && session.activity in ['concept', 'questions', 'review', 'simulation']
+        && session.completed is bool;
+    }
+
+    function validStudySessionItem(sessions, index) {
+      return sessions.size() <= index || validStudySession(sessions[index]);
+    }
+
+    function validStudySessions(sessions) {
+      return sessions is list
+        && sessions.size() >= 1
+        && sessions.size() <= 21
+        && validStudySessionItem(sessions, 0)
+        && validStudySessionItem(sessions, 1)
+        && validStudySessionItem(sessions, 2)
+        && validStudySessionItem(sessions, 3)
+        && validStudySessionItem(sessions, 4)
+        && validStudySessionItem(sessions, 5)
+        && validStudySessionItem(sessions, 6)
+        && validStudySessionItem(sessions, 7)
+        && validStudySessionItem(sessions, 8)
+        && validStudySessionItem(sessions, 9)
+        && validStudySessionItem(sessions, 10)
+        && validStudySessionItem(sessions, 11)
+        && validStudySessionItem(sessions, 12)
+        && validStudySessionItem(sessions, 13)
+        && validStudySessionItem(sessions, 14)
+        && validStudySessionItem(sessions, 15)
+        && validStudySessionItem(sessions, 16)
+        && validStudySessionItem(sessions, 17)
+        && validStudySessionItem(sessions, 18)
+        && validStudySessionItem(sessions, 19)
+        && validStudySessionItem(sessions, 20);
+    }
+
+    function createdAtUnchanged() {
+      return request.resource.data.createdAt == resource.data.createdAt;
+    }
+
+    function validQuestionOptions(values) {
+      return values is list
+        && values.size() >= 2
+        && values.size() <= 6
+        && validStringListItem(values, 0, 500)
+        && validStringListItem(values, 1, 500)
+        && validStringListItem(values, 2, 500)
+        && validStringListItem(values, 3, 500)
+        && validStringListItem(values, 4, 500)
+        && validStringListItem(values, 5, 500);
+    }
+
+    function validTeacherQuestion() {
+      let data = request.resource.data;
+      return hasOnly(data, [
+          'area', 'skillId', 'skillLabel', 'prompt', 'options', 'correctOption',
+          'explanation', 'difficulty', 'isActive', 'source', 'createdAt', 'updatedAt'
+        ])
+        && validShortString(data.area, 120)
+        && validShortString(data.skillId, 128)
+        && validShortString(data.skillLabel, 120)
+        && validShortString(data.prompt, 5000)
+        && validQuestionOptions(data.options)
+        && data.correctOption is int
+        && data.correctOption >= 0
+        && data.correctOption < data.options.size()
+        && validShortString(data.explanation, 5000)
+        && data.difficulty is int
+        && data.difficulty >= 1
+        && data.difficulty <= 3
+        && data.isActive is bool
+        && data.source == 'teacher'
+        && data.updatedAt == request.time;
+    }
+
+    function validExternalNotebook() {
+      let data = request.resource.data;
+      return hasOnly(data, [
+          'title', 'description', 'subject', 'url', 'isActive', 'source',
+          'createdAt', 'updatedAt'
+        ])
+        && validShortString(data.title, 160)
+        && validShortString(data.description, 2000)
+        && validShortString(data.subject, 160)
+        && data.url is string
+        && data.url.size() <= 2048
+        && (!data.isActive || data.url.matches('https://.*'))
+        && data.isActive is bool
+        && data.source == 'teacher'
+        && data.updatedAt == request.time;
+    }
+
+    function validPromptPreset(mode) {
+      let data = request.resource.data;
+      return hasOnly(data, ['mode', 'description', 'instruction', 'createdAt', 'updatedAt'])
+        && mode in [
+          'assistant', 'tutor', 'summary', 'questions', 'flashcards',
+          'mindmap', 'study-plan', 'review'
+        ]
+        && data.mode == mode
+        && validShortString(data.description, 240)
+        && validShortString(data.instruction, 8000)
+        && data.instruction.size() >= 50
+        && data.updatedAt == request.time;
+    }
+
+    function validUserCreate(uid) {
+      let data = request.resource.data;
+      return hasOnly(data, [
+          'uid', 'email', 'name', 'avatarUrl', 'turma', 'profileCompleted',
+          'createdAt', 'updatedAt'
+        ])
+        && data.uid == uid
+        && data.email == request.auth.token.email
+        && validShortString(data.email, 320)
+        && validShortString(data.name, 120)
+        && validOptionalString(data, 'avatarUrl', 2048)
+        && validOptionalString(data, 'turma', 80)
+        && data.profileCompleted is bool
+        && validRecentCreate(data)
+        && data.updatedAt == request.time;
+    }
+
+    function validUserUpdate(uid) {
+      let data = request.resource.data;
+      return hasOnly(data, [
+          'uid', 'email', 'name', 'avatarUrl', 'turma', 'profileCompleted',
+          'createdAt', 'updatedAt'
+        ])
+        && data.uid == uid
+        && data.uid == resource.data.uid
+        && data.email == resource.data.email
+        && validShortString(data.email, 320)
+        && validShortString(data.name, 120)
+        && validOptionalString(data, 'avatarUrl', 2048)
+        && validOptionalString(data, 'turma', 80)
+        && data.profileCompleted is bool
+        && createdAtUnchanged()
+        && data.updatedAt == request.time;
+    }
+
+    match /users/{uid} {
+      allow get: if isOwner(uid);
+      allow list: if false;
+      allow create: if isOwner(uid) && validUserCreate(uid);
+      allow update: if isOwner(uid) && validUserUpdate(uid);
+      allow delete: if isOwner(uid);
+
+      match /conversations/{conversationId} {
+        function validConversation() {
+          let data = request.resource.data;
+          return hasOnly(data, ['title', 'notebookId', 'createdAt', 'updatedAt'])
+            && validShortString(data.title, 160)
+            && validOptionalString(data, 'notebookId', 128)
+            && data.updatedAt == request.time;
+        }
+
+        allow read: if isOwner(uid);
+        allow create: if isOwner(uid) && validConversation() && validRecentCreate(request.resource.data);
+        allow update: if isOwner(uid) && validConversation() && createdAtUnchanged();
+        allow delete: if isOwner(uid);
+
+        match /messages/{messageId} {
+          function validMessage() {
+            let data = request.resource.data;
+            return hasOnly(data, [
+                'role', 'content', 'mode', 'attachmentIds', 'status', 'createdAt'
+              ])
+              && data.role in ['user', 'assistant']
+              && validShortString(data.content, 20000)
+              && (!('mode' in data)
+                || data.mode in [
+                  'assistant', 'tutor', 'summary', 'questions', 'flashcards',
+                  'mindmap', 'study-plan', 'review'
+                ])
+              && validAttachmentIds(data)
+              && (!('status' in data)
+                || data.status in ['sending', 'streaming', 'completed', 'error']);
+          }
+
+          allow read: if isOwner(uid);
+          allow create: if isOwner(uid) && validMessage() && validRecentCreate(request.resource.data);
+          allow update: if isOwner(uid) && validMessage() && createdAtUnchanged();
+          allow delete: if isOwner(uid);
+        }
+      }
+
+      match /studyPlans/{planId} {
+        function validPlan() {
+          let data = request.resource.data;
+          return hasOnly(data, [
+              'title', 'targetOlympiad', 'examDate', 'availableDays',
+              'minutesPerDay', 'priorityTopics', 'sessions', 'createdAt', 'updatedAt'
+            ])
+            && validShortString(data.title, 160)
+            && validShortString(data.targetOlympiad, 160)
+            && validOptionalString(data, 'examDate', 32)
+            && validAvailableDays(data.availableDays)
+            && data.minutesPerDay is int && data.minutesPerDay >= 10 && data.minutesPerDay <= 600
+            && validPriorityTopics(data)
+            && validStudySessions(data.sessions)
+            && data.updatedAt == request.time;
+        }
+
+        allow read: if isOwner(uid);
+        allow create: if isOwner(uid) && validPlan() && validRecentCreate(request.resource.data);
+        allow update: if isOwner(uid) && validPlan() && createdAtUnchanged();
+        allow delete: if isOwner(uid);
+      }
+
+      match /artifacts/{artifactId} {
+        function validArtifact() {
+          let data = request.resource.data;
+          return hasOnly(data, ['type', 'title', 'content', 'sourceConversationId', 'createdAt'])
+            && data.type in ['summary', 'questions', 'flashcards', 'mindmap', 'study-plan']
+            && validShortString(data.title, 160)
+            && validShortString(data.content, 50000)
+            && validOptionalString(data, 'sourceConversationId', 128);
+        }
+
+        allow read: if isOwner(uid);
+        allow create: if isOwner(uid) && validArtifact() && validRecentCreate(request.resource.data);
+        allow update: if false;
+        allow delete: if isOwner(uid);
+      }
+
+      match /uploads/{uploadId} {
+        // Files are sent inline to AI Logic and are intentionally not persisted.
+        allow read, write: if false;
+      }
+
+      // Attempts are immutable objective events. They affect only the authenticated
+      // student's private learning experience.
+      match /attempts/{attemptId} {
+        function validAttempt() {
+          let data = request.resource.data;
+          return hasOnly(data, [
+              'questionId', 'skillId', 'selectedOption', 'correct', 'difficulty',
+              'responseTimeMs', 'answeredAt', 'errorType', 'createdAt'
+            ])
+            && validShortString(data.questionId, 128)
+            && validShortString(data.skillId, 128)
+            && data.selectedOption is int
+            && data.selectedOption >= 0
+            && data.selectedOption <= 10
+            && data.correct is bool
+            && data.difficulty is int
+            && data.difficulty >= 1
+            && data.difficulty <= 3
+            && data.responseTimeMs is int
+            && data.responseTimeMs >= 0
+            && data.responseTimeMs <= 86400000
+            && data.answeredAt is timestamp
+            && data.answeredAt <= request.time + duration.value(5, 'm')
+            && (!('errorType' in data)
+              || data.errorType == null
+              || data.errorType in ['conceptual', 'interpretation', 'incomplete_reasoning']);
+        }
+
+        allow read: if isOwner(uid);
+        allow create: if isOwner(uid) && validAttempt() && validRecentCreate(request.resource.data);
+        allow update: if false;
+        allow delete: if isOwner(uid);
+      }
+
+      match /skillMastery/{skillId} {
+        function validMastery() {
+          let data = request.resource.data;
+          return hasOnly(data, [
+              'skillId', 'label', 'score', 'attempts', 'correctAttempts',
+              'lastAttemptAt', 'confidence', 'updatedAt'
+            ])
+            && data.skillId == skillId
+            && validShortString(data.skillId, 128)
+            && validShortString(data.label, 120)
+            && data.score is int
+            && data.score >= 0
+            && data.score <= 100
+            && data.attempts is int
+            && data.attempts >= 0
+            && data.correctAttempts is int
+            && data.correctAttempts >= 0
+            && data.correctAttempts <= data.attempts
+            && (!('lastAttemptAt' in data)
+              || (data.lastAttemptAt is timestamp
+                && data.lastAttemptAt <= request.time + duration.value(5, 'm')))
+            && data.confidence in ['low', 'medium', 'high']
+            && data.updatedAt == request.time;
+        }
+
+        allow read: if isOwner(uid);
+        allow create: if isOwner(uid) && validMastery();
+        allow update: if isOwner(uid) && validMastery();
+        allow delete: if isOwner(uid);
+      }
+
+      match /progressEvents/{eventId} {
+        function validProgressEvent() {
+          let data = request.resource.data;
+          return hasOnly(data, ['type', 'skillId', 'score', 'occurredAt', 'createdAt'])
+            && data.type in ['diagnostic_completed', 'training_attempt']
+            && validOptionalString(data, 'skillId', 128)
+            && (!('score' in data)
+              || (data.score is int && data.score >= 0 && data.score <= 100))
+            && data.occurredAt is timestamp
+            && data.occurredAt <= request.time + duration.value(5, 'm')
+            && ((data.type == 'diagnostic_completed'
+                && !('skillId' in data)
+                && 'score' in data)
+              || (data.type == 'training_attempt'
+                && 'skillId' in data
+                && 'score' in data));
+        }
+
+        allow read: if isOwner(uid);
+        allow create: if isOwner(uid)
+          && validProgressEvent()
+          && validRecentCreate(request.resource.data);
+        allow update: if false;
+        allow delete: if isOwner(uid);
+      }
+
+      // Tello: separate ENEM and PM-PE state, private to the signed-in owner.
+      match /telloStates/{track} {
+        function validTelloState() {
+          let state = request.resource.data;
+          let data = state.data;
+          return track in ['enem', 'pmpe']
+            && state.keys().hasOnly(['data', 'revision', 'updatedAt'])
+            && state.revision is int && state.revision > 0
+            && state.updatedAt == request.time
+            && data is map
+            && data.keys().hasOnly(['version', 'attempts', 'completedLessons', 'bookmarks', 'plan', 'essays', 'simulations', 'activeSimulation', 'focusMinutes', 'goalDate', 'name'])
+            && data.version == 1
+            && data.attempts is list && data.attempts.size() <= 3000
+            && data.completedLessons is list && data.completedLessons.size() <= 1000
+            && data.bookmarks is list && data.bookmarks.size() <= 1000
+            && (data.plan == null || data.plan is map)
+            && data.essays is map && data.essays.size() <= 20
+            && (data.activeSimulation == null || data.activeSimulation is map)
+            && data.simulations is list && data.simulations.size() <= 100
+            && data.focusMinutes is number && data.focusMinutes >= 0
+            && data.name is string && data.name.size() <= 80
+            && data.goalDate is string && data.goalDate.size() <= 10;
+        }
+        allow read: if isOwner(uid);
+        allow create: if isOwner(uid) && validTelloState() && request.resource.data.revision == 1;
+        allow update: if isOwner(uid) && validTelloState() && request.resource.data.revision == resource.data.revision + 1;
+        allow delete: if false;
+      }
+
+      match /{unknownSubcollection}/{document=**} {
+        allow read, write: if false;
+      }
+    }
+
+    // Catalog publication is performed with the Admin SDK by the project owner.
+    // Public authorial seed is bundled in the client; cloud additions require login.
+    match /telloQuestions/{questionId} {
+      allow read: if isAuthenticated();
+      allow write: if false;
+    }
+
+    match /skills/{skillId} {
+      allow read: if isAuthenticated();
+      allow write: if false;
+    }
+
+    match /questions/{questionId} {
+      allow read: if isAuthenticated();
+      allow create: if isTeacher() && validTeacherQuestion() && validRecentCreate(request.resource.data);
+      allow update: if isTeacher() && validTeacherQuestion() && createdAtUnchanged();
+      allow delete: if isTeacher();
+    }
+
+    match /notebooks/{notebookId} {
+      allow read: if isAuthenticated();
+      allow write: if false;
+    }
+
+    match /externalNotebooks/{notebookId} {
+      allow read: if isAuthenticated();
+      allow create: if isTeacher() && validExternalNotebook() && validRecentCreate(request.resource.data);
+      allow update: if isTeacher() && validExternalNotebook() && createdAtUnchanged();
+      allow delete: if isTeacher();
+    }
+
+    match /promptPresets/{mode} {
+      allow read: if isAuthenticated();
+      allow create: if isTeacher() && validPromptPreset(mode) && validRecentCreate(request.resource.data);
+      allow update: if isTeacher() && validPromptPreset(mode) && createdAtUnchanged();
+      allow delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

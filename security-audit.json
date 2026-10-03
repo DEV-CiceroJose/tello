@@ -1,0 +1,19 @@
+{
+  "score": 4,
+  "summary": "As regras aplicam negação por padrão, isolamento estrito por request.auth.uid, esquemas fechados, limites de tamanho, validação de tipos e os mesmos validadores em create/update. O cache local de aprendizagem também é separado por UID e dados legados globais não são atribuídos automaticamente a uma conta. O risco residual é limitado à integridade do progresso do próprio estudante, pois uma aplicação sem servidor confiável precisa aceitar eventos calculados no cliente.",
+  "resolvedFindings": [
+    {
+      "severity": "major",
+      "issue": "O cache local usava chaves globais e podia migrar o progresso de uma conta anterior para uma conta nova no mesmo navegador.",
+      "resolution": "As chaves agora incluem o UID autenticado. O cache legado global é apenas detectável e nunca é importado automaticamente."
+    }
+  ],
+  "findings": [
+    {
+      "check": "Business Logic vs. Rules",
+      "severity": "minor",
+      "issue": "O usuário autenticado pode fabricar tentativas e agregados de progresso dentro da própria área privada. Isso não concede acesso a dados de terceiros nem privilégios administrativos, mas impede tratar o placar como prova competitiva inviolável.",
+      "recommendation": "Manter o progresso como ferramenta pessoal. Se futuramente ele for usado para ranking, certificação ou premiação, validar respostas em um backend confiável antes de atualizar os agregados."
+    }
+  ]
+}
