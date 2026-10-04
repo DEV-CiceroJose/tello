@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
-import { SUBJECTS, TRACKS } from "./catalog";
+import { LESSONS, SUBJECTS, TRACKS } from "./catalog";
 import { latestAttempts, createSimulation } from "./engine";
 import { Button, Icon, SectionHead, Empty, Picker, Meter } from "./ui";
 const difficultyLabels = { 1: "Básico", 2: "Intermediário", 3: "Avançado" };
@@ -15,8 +15,17 @@ function attemptFor(q, selected, mode = "practice") {
     mode,
   };
 }
-export function QuestionBank({ track, progress, update, questions, initialSubject, catalogError }) {
+export function QuestionBank({
+  track,
+  progress,
+  update,
+  questions,
+  initialSubject,
+  initialLesson,
+  catalogError,
+}) {
   const [subject, setSubject] = useState(initialSubject);
+  const [lessonId, setLessonId] = useState(initialLesson);
   const [difficulty, setDifficulty] = useState("all");
   const [status, setStatus] = useState("all");
   const [query, setQuery] = useState("");
@@ -26,11 +35,13 @@ export function QuestionBank({ track, progress, update, questions, initialSubjec
   const [cohort, setCohort] = useState(() => latestAttempts(progress.attempts));
   useEffect(() => {
     setSubject(initialSubject);
+    setLessonId(initialLesson);
     setIndex(0);
-  }, [initialSubject]);
+  }, [initialSubject, initialLesson]);
   const filtered = questions.filter(
     (q) =>
       (subject === "all" || q.subject === subject) &&
+      (lessonId === "all" || q.lessonId === lessonId) &&
       (difficulty === "all" || q.difficulty === Number(difficulty)) &&
       (status === "all" ||
         (status === "new" && !cohort[q.id]) ||
@@ -61,12 +72,30 @@ export function QuestionBank({ track, progress, update, questions, initialSubjec
         <Picker
           label="Disciplina"
           value={subject}
-          onChange={change(setSubject)}
+          onChange={(value) => {
+            change(setSubject)(value);
+            setLessonId("all");
+          }}
           options={[
             { value: "all", label: "Todas as disciplinas" },
             ...SUBJECTS.filter((s) => s.track === track).map((s) => ({
               value: s.id,
-              label: s.name,
+              label: `${s.name} · ${questions.filter((q) => q.subject === s.id).length}`,
+            })),
+          ]}
+        />
+        <Picker
+          label="Aula"
+          value={lessonId}
+          onChange={change(setLessonId)}
+          options={[
+            { value: "all", label: "Todas as aulas" },
+            ...LESSONS.filter(
+              (lesson) =>
+                lesson.track === track && (subject === "all" || lesson.subject === subject),
+            ).map((lesson) => ({
+              value: lesson.id,
+              label: lesson.title,
             })),
           ]}
         />

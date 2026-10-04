@@ -1,0 +1,14 @@
+{
+  "name": "olympic-school-backend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "firebase:use": "npx -y firebase-tools@latest use",
+    "deploy:firestore": "npx -y firebase-tools@latest deploy --only firestore --project tello-31768",
+    "teacher:set-claim": "node scripts/set-teacher-claim.mjs",
+    "seed:tello": "node scripts/seed-tello.mjs"
+  },
+  "dependencies": {
+    "firebase-admin": "^14.5.0"
+  }
+}

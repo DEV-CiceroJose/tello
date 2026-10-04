@@ -1,5 +1,14 @@
 import { useEffect, useState } from "react";
-import { collection, getDocs, query, where, limit } from "firebase/firestore";
+import {
+  collection,
+  documentId,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  startAfter,
+  where,
+} from "firebase/firestore";
 import { db, isFirebaseConfigured } from "@/lib/firebase";
 import { QUESTIONS } from "./questions";
 export function isValidQuestion(q) {
@@ -27,14 +36,23 @@ export function useCatalog(track, uid) {
     setRemote([]);
     setError(false);
     if (!uid || !isFirebaseConfigured) return;
-    getDocs(query(collection(db, "telloQuestions"), where("track", "==", track), limit(500)))
-      .then((snapshot) => {
-        if (active)
-          setRemote(snapshot.docs.map((d) => ({ ...d.data(), id: d.id })).filter(isValidQuestion));
-      })
-      .catch(() => {
-        if (active) setError(true);
-      });
+    const load = async () => {
+      const found = [];
+      let cursor;
+      do {
+        const constraints = [where("track", "==", track), orderBy(documentId()), limit(250)];
+        if (cursor) constraints.push(startAfter(cursor));
+        const snapshot = await getDocs(query(collection(db, "telloQuestions"), ...constraints));
+        found.push(
+          ...snapshot.docs.map((d) => ({ ...d.data(), id: d.id })).filter(isValidQuestion),
+        );
+        cursor = snapshot.docs.length === 250 ? snapshot.docs.at(-1) : null;
+      } while (cursor && active);
+      if (active) setRemote(found);
+    };
+    load().catch(() => {
+      if (active) setError(true);
+    });
     return () => {
       active = false;
     };

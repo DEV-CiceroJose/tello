@@ -65,7 +65,7 @@ export function Materials({ track, progress, initialSubject, query, setQuery, op
             className={subject === s.id ? "active" : ""}
             onClick={() => setSubject(s.id)}
           >
-            {s.name}
+            {s.name} · {all.filter((lesson) => lesson.subject === s.id).length}
           </button>
         ))}
       </div>
@@ -117,7 +117,8 @@ export function Materials({ track, progress, initialSubject, query, setQuery, op
       <div className="source-note">
         <Icon name="Info" size={18} />
         <p>
-          Acervo inicial e introdutório. Continue seu aprofundamento com as fontes oficiais.
+          Aulas e questões autorais em expansão. Para legislação e editais, confira sempre a fonte
+          oficial atualizada.
           <br />
           <a href={TRACKS[track].reference.url} target="_blank" rel="noreferrer">
             {TRACKS[track].reference.label} ↗
@@ -209,7 +210,7 @@ export function LessonReader({ lesson, onClose, progress, update, go }) {
             endIcon="ArrowRight"
             onClick={() => {
               onClose();
-              go("questions", lesson.subject);
+              go("questions", lesson.subject, lesson.id);
             }}
           >
             Praticar questões

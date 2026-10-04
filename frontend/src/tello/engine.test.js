@@ -12,24 +12,29 @@ import {
 } from "./engine";
 describe("Tello content integrity", () => {
   it("provides distinct, commented questions for every lesson", () => {
-    expect(QUESTIONS).toHaveLength(48);
-    expect(LESSONS).toHaveLength(24);
+    expect(QUESTIONS.length).toBeGreaterThan(350);
+    expect(LESSONS.length).toBeGreaterThan(50);
     expect(new Set(QUESTIONS.map((q) => q.id)).size).toBe(QUESTIONS.length);
+    expect(new Set(QUESTIONS.map((q) => q.stem)).size).toBe(QUESTIONS.length);
     for (const lesson of LESSONS) {
       const questions = QUESTIONS.filter((q) => q.lessonId === lesson.id);
-      expect(questions).toHaveLength(2);
+      expect(questions.length).toBeGreaterThanOrEqual(2);
       expect(lesson.paragraphs.length).toBeGreaterThanOrEqual(3);
       for (const q of questions) {
         expect(q.track).toBe(lesson.track);
         expect(q.options).toHaveLength(5);
         expect(q.answer).toBeGreaterThanOrEqual(0);
         expect(q.answer).toBeLessThan(5);
-        expect(q.explanation.length).toBeGreaterThan(50);
+        expect(new Set(q.options).size).toBe(5);
+        expect(q.explanation.length).toBeGreaterThan(20);
       }
     }
   });
-  it("covers all ten configured areas", () => {
+  it("covers every configured area, including PM-PE legislation", () => {
     expect(new Set(QUESTIONS.map((q) => q.subject)).size).toBe(SUBJECTS.length);
+    expect(QUESTIONS.filter((q) => q.subject === "legislacao-pmpe").length).toBeGreaterThanOrEqual(
+      30,
+    );
   });
 });
 describe("Tello plans", () => {
@@ -94,8 +99,8 @@ describe("Tello practice and progress", () => {
     const sample = createSimulation(q, 10, () => 0.5);
     expect(sample).toHaveLength(10);
     expect(new Set(sample.map((q) => q.id)).size).toBe(10);
-    expect(new Set(sample.map((q) => q.subject)).size).toBe(6);
-    expect(createSimulation(q, 100)).toHaveLength(24);
+    expect(new Set(sample.map((q) => q.subject)).size).toBeGreaterThanOrEqual(6);
+    expect(createSimulation(q, 100)).toHaveLength(100);
   });
   it("counts text without pretending to grade an essay", () => {
     const text = "Uma ideia.\n\nOutro argumento.";

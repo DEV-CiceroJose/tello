@@ -1,4 +1,6 @@
 import { LESSONS } from "./catalog.js";
+import { EXPANDED_QUESTIONS } from "./expanded-content.js";
+import { VARIABLE_QUESTIONS } from "./variable-questions.js";
 const rows = [
   [
     "porcentagem",
@@ -577,7 +579,7 @@ const rows = [
     "O enquadramento exige analisar os elementos legais. Uma avaliação negativa de uma conduta não substitui a verificação dos requisitos da norma.",
   ],
 ];
-export const QUESTIONS = rows.map(
+const initialQuestions = rows.map(
   ([lessonId, difficulty, stem, options, answer, explanation], index) => {
     const lesson = LESSONS.find((l) => l.id === lessonId);
     return {
@@ -595,3 +597,4 @@ export const QUESTIONS = rows.map(
     };
   },
 );
+export const QUESTIONS = [...initialQuestions, ...EXPANDED_QUESTIONS, ...VARIABLE_QUESTIONS];
