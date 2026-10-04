@@ -55,13 +55,15 @@ function StudyWorkspace({ track, tab, user, profile, authLoading, login, logout 
   const [help, setHelp] = useState(false);
   const [lesson, setLesson] = useState(null);
   const [filter, setFilter] = useState("all");
+  const [lessonFilter, setLessonFilter] = useState("all");
   const [query, setQuery] = useState("");
   const [authBusy, setAuthBusy] = useState(false);
   const [focus, setFocus] = useState({ remaining: 25 * 60, running: false, endsAt: 0 });
   const stats = getStats(progress);
   const info = TRACKS[track];
-  const go = (next, subject = "all") => {
+  const go = (next, subject = "all", lessonId = "all") => {
     setFilter(subject);
+    setLessonFilter(lessonId);
     setQuery("");
     setMobile(false);
     navigate({ to: "/", search: { track, tab: next } });
@@ -301,7 +303,12 @@ function StudyWorkspace({ track, tab, user, profile, authLoading, login, logout 
                 />
               )}
               {tab === "questions" && (
-                <QuestionBank {...mainProps} initialSubject={filter} catalogError={catalogError} />
+                <QuestionBank
+                  {...mainProps}
+                  initialSubject={filter}
+                  initialLesson={lessonFilter}
+                  catalogError={catalogError}
+                />
               )}
               {tab === "plan" && <StudyPlan {...mainProps} openLesson={setLesson} />}
               {tab === "simulations" && <Simulations {...mainProps} />}

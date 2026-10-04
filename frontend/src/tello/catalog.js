@@ -1,3 +1,5 @@
+import { EXPANDED_LESSONS } from "./expanded-content.js";
+
 export const SOURCES = {
   enem: {
     label: "Matriz de referência · INEP",
@@ -18,6 +20,18 @@ export const SOURCES = {
   rights: {
     label: "Declaração Universal · ONU",
     url: "https://www.un.org/en/about-us/universal-declaration-of-human-rights",
+  },
+  estatuto: {
+    label: "Estatuto da PMPE · ALEPE",
+    url: "https://legis.alepe.pe.gov.br/texto.aspx?id=1032&tipo=TEXTOATUALIZADO",
+  },
+  disciplina: {
+    label: "Código Disciplinar · PMPE Lex",
+    url: "https://www.pm.pe.gov.br/decretos-pmpe-legis/",
+  },
+  organizacao: {
+    label: "Organização da PMPE · ALEPE",
+    url: "https://legis.alepe.pe.gov.br/texto.aspx?id=1772&tipo=TEXTOATUALIZADO",
   },
 };
 export const TRACKS = {
@@ -117,6 +131,14 @@ export const SUBJECTS = [
     icon: "HeartHandshake",
     color: "purple",
     description: "Dignidade, igualdade e proteção.",
+  },
+  {
+    id: "legislacao-pmpe",
+    track: "pmpe",
+    name: "Legislação da PM-PE",
+    icon: "BookOpenCheck",
+    color: "orange",
+    description: "Estatuto, disciplina e organização da corporação.",
   },
 ];
 // Conteúdo didático autoral introdutório. Não são questões oficiais nem reprodução de provas.
@@ -462,20 +484,31 @@ const lessons = [
     "constitution",
   ],
 ];
-export const LESSONS = lessons.map(
-  ([id, subject, title, subtitle, minutes, paragraphs, example, takeaway, source]) => ({
-    id,
-    subject,
-    title,
-    subtitle,
-    minutes,
-    paragraphs,
-    example,
-    takeaway,
-    track: SUBJECTS.find((s) => s.id === subject).track,
-    source: SOURCES[source || SUBJECTS.find((s) => s.id === subject).track],
-  }),
-);
+export const LESSONS = [
+  ...lessons,
+  ...EXPANDED_LESSONS.map((lesson) => [
+    lesson.id,
+    lesson.subject,
+    lesson.title,
+    lesson.subtitle,
+    lesson.minutes,
+    lesson.paragraphs,
+    lesson.example,
+    lesson.takeaway,
+    lesson.source,
+  ]),
+].map(([id, subject, title, subtitle, minutes, paragraphs, example, takeaway, source]) => ({
+  id,
+  subject,
+  title,
+  subtitle,
+  minutes,
+  paragraphs,
+  example,
+  takeaway,
+  track: SUBJECTS.find((s) => s.id === subject).track,
+  source: SOURCES[source || SUBJECTS.find((s) => s.id === subject).track],
+}));
 export const ESSAY_THEMES = [
   {
     id: "leitura",
