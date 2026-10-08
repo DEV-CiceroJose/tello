@@ -1,0 +1,734 @@
+[
+  {
+    "id": "cec-17528",
+    "title": "Matemática - Volume 1",
+    "provider": "Fundação CECIERJ",
+    "kind": "Apostila",
+    "tracks": [
+      "enem",
+      "pmpe"
+    ],
+    "subjects": [
+      "matematica",
+      "logica"
+    ],
+    "url": "https://canal.cecierj.edu.br/recurso/17528",
+    "description": "Livro gratuito com teoria e exercícios. Abra a página da instituição para acessar o PDF e os créditos.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "cec-17602",
+    "title": "Matemática - Volume 2",
+    "provider": "Fundação CECIERJ",
+    "kind": "Apostila",
+    "tracks": [
+      "enem",
+      "pmpe"
+    ],
+    "subjects": [
+      "matematica",
+      "logica"
+    ],
+    "url": "https://canal.cecierj.edu.br/recurso/17602",
+    "description": "Livro gratuito com teoria e exercícios. Abra a página da instituição para acessar o PDF e os créditos.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "cec-17529",
+    "title": "Língua Portuguesa - Volume 1",
+    "provider": "Fundação CECIERJ",
+    "kind": "Apostila",
+    "tracks": [
+      "enem",
+      "pmpe"
+    ],
+    "subjects": [
+      "linguagens",
+      "portugues"
+    ],
+    "url": "https://canal.cecierj.edu.br/recurso/17529",
+    "description": "Livro gratuito com teoria e exercícios. Abra a página da instituição para acessar o PDF e os créditos.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "cec-17601",
+    "title": "Língua Portuguesa - Volume 2",
+    "provider": "Fundação CECIERJ",
+    "kind": "Apostila",
+    "tracks": [
+      "enem",
+      "pmpe"
+    ],
+    "subjects": [
+      "linguagens",
+      "portugues"
+    ],
+    "url": "https://canal.cecierj.edu.br/recurso/17601",
+    "description": "Livro gratuito com teoria e exercícios. Abra a página da instituição para acessar o PDF e os créditos.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "cec-17526",
+    "title": "Redação - Volume 1",
+    "provider": "Fundação CECIERJ",
+    "kind": "Apostila",
+    "tracks": [
+      "enem"
+    ],
+    "subjects": [
+      "redacao",
+      "portugues"
+    ],
+    "url": "https://canal.cecierj.edu.br/recurso/17526",
+    "description": "Livro gratuito com teoria e exercícios. Abra a página da instituição para acessar o PDF e os créditos.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "cec-17595",
+    "title": "Redação - Volume 2",
+    "provider": "Fundação CECIERJ",
+    "kind": "Apostila",
+    "tracks": [
+      "enem"
+    ],
+    "subjects": [
+      "redacao",
+      "portugues"
+    ],
+    "url": "https://canal.cecierj.edu.br/recurso/17595",
+    "description": "Livro gratuito com teoria e exercícios. Abra a página da instituição para acessar o PDF e os créditos.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "cec-17535",
+    "title": "Biologia - Volume 1",
+    "provider": "Fundação CECIERJ",
+    "kind": "Apostila",
+    "tracks": [
+      "enem"
+    ],
+    "subjects": [
+      "natureza"
+    ],
+    "url": "https://canal.cecierj.edu.br/recurso/17535",
+    "description": "Livro gratuito com teoria e exercícios. Abra a página da instituição para acessar o PDF e os créditos.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "cec-17596",
+    "title": "Biologia - Volume 2",
+    "provider": "Fundação CECIERJ",
+    "kind": "Apostila",
+    "tracks": [
+      "enem"
+    ],
+    "subjects": [
+      "natureza"
+    ],
+    "url": "https://canal.cecierj.edu.br/recurso/17596",
+    "description": "Livro gratuito com teoria e exercícios. Abra a página da instituição para acessar o PDF e os créditos.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "cec-17533",
+    "title": "Física - Volume 1",
+    "provider": "Fundação CECIERJ",
+    "kind": "Apostila",
+    "tracks": [
+      "enem"
+    ],
+    "subjects": [
+      "natureza"
+    ],
+    "url": "https://canal.cecierj.edu.br/recurso/17533",
+    "description": "Livro gratuito com teoria e exercícios. Abra a página da instituição para acessar o PDF e os créditos.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "cec-17598",
+    "title": "Física - Volume 2",
+    "provider": "Fundação CECIERJ",
+    "kind": "Apostila",
+    "tracks": [
+      "enem"
+    ],
+    "subjects": [
+      "natureza"
+    ],
+    "url": "https://canal.cecierj.edu.br/recurso/17598",
+    "description": "Livro gratuito com teoria e exercícios. Abra a página da instituição para acessar o PDF e os créditos.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "cec-17527",
+    "title": "Química - Volume 1",
+    "provider": "Fundação CECIERJ",
+    "kind": "Apostila",
+    "tracks": [
+      "enem"
+    ],
+    "subjects": [
+      "natureza"
+    ],
+    "url": "https://canal.cecierj.edu.br/recurso/17527",
+    "description": "Livro gratuito com teoria e exercícios. Abra a página da instituição para acessar o PDF e os créditos.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "cec-17603",
+    "title": "Química - Volume 2",
+    "provider": "Fundação CECIERJ",
+    "kind": "Apostila",
+    "tracks": [
+      "enem"
+    ],
+    "subjects": [
+      "natureza"
+    ],
+    "url": "https://canal.cecierj.edu.br/recurso/17603",
+    "description": "Livro gratuito com teoria e exercícios. Abra a página da instituição para acessar o PDF e os créditos.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "cec-17531",
+    "title": "História - Volume 1",
+    "provider": "Fundação CECIERJ",
+    "kind": "Apostila",
+    "tracks": [
+      "enem"
+    ],
+    "subjects": [
+      "humanas"
+    ],
+    "url": "https://canal.cecierj.edu.br/recurso/17531",
+    "description": "Livro gratuito com teoria e exercícios. Abra a página da instituição para acessar o PDF e os créditos.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "cec-17604",
+    "title": "História - Volume 2",
+    "provider": "Fundação CECIERJ",
+    "kind": "Apostila",
+    "tracks": [
+      "enem"
+    ],
+    "subjects": [
+      "humanas"
+    ],
+    "url": "https://canal.cecierj.edu.br/recurso/17604",
+    "description": "Livro gratuito com teoria e exercícios. Abra a página da instituição para acessar o PDF e os créditos.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "cec-17532",
+    "title": "Geografia - Volume 1",
+    "provider": "Fundação CECIERJ",
+    "kind": "Apostila",
+    "tracks": [
+      "enem",
+      "pmpe"
+    ],
+    "subjects": [
+      "humanas",
+      "geografia-pe"
+    ],
+    "url": "https://canal.cecierj.edu.br/recurso/17532",
+    "description": "Livro gratuito com teoria e exercícios. Abra a página da instituição para acessar o PDF e os créditos.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "cec-17599",
+    "title": "Geografia - Volume 2",
+    "provider": "Fundação CECIERJ",
+    "kind": "Apostila",
+    "tracks": [
+      "enem",
+      "pmpe"
+    ],
+    "subjects": [
+      "humanas",
+      "geografia-pe"
+    ],
+    "url": "https://canal.cecierj.edu.br/recurso/17599",
+    "description": "Livro gratuito com teoria e exercícios. Abra a página da instituição para acessar o PDF e os créditos.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "cec-17530",
+    "title": "Inglês - Volume 1",
+    "provider": "Fundação CECIERJ",
+    "kind": "Apostila",
+    "tracks": [
+      "enem",
+      "pmpe"
+    ],
+    "subjects": [
+      "linguagens",
+      "ingles-pmpe"
+    ],
+    "url": "https://canal.cecierj.edu.br/recurso/17530",
+    "description": "Livro gratuito com teoria e exercícios. Abra a página da instituição para acessar o PDF e os créditos.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "cec-17600",
+    "title": "Inglês - Volume 2",
+    "provider": "Fundação CECIERJ",
+    "kind": "Apostila",
+    "tracks": [
+      "enem",
+      "pmpe"
+    ],
+    "subjects": [
+      "linguagens",
+      "ingles-pmpe"
+    ],
+    "url": "https://canal.cecierj.edu.br/recurso/17600",
+    "description": "Livro gratuito com teoria e exercícios. Abra a página da instituição para acessar o PDF e os créditos.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "cec-17534",
+    "title": "Espanhol - Volume 1",
+    "provider": "Fundação CECIERJ",
+    "kind": "Apostila",
+    "tracks": [
+      "enem",
+      "pmpe"
+    ],
+    "subjects": [
+      "linguagens"
+    ],
+    "url": "https://canal.cecierj.edu.br/recurso/17534",
+    "description": "Livro gratuito com teoria e exercícios. Abra a página da instituição para acessar o PDF e os créditos.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "cec-17597",
+    "title": "Espanhol - Volume 2",
+    "provider": "Fundação CECIERJ",
+    "kind": "Apostila",
+    "tracks": [
+      "enem",
+      "pmpe"
+    ],
+    "subjects": [
+      "linguagens"
+    ],
+    "url": "https://canal.cecierj.edu.br/recurso/17597",
+    "description": "Livro gratuito com teoria e exercícios. Abra a página da instituição para acessar o PDF e os créditos.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "video-20",
+    "title": "Evolução Biológica",
+    "provider": "USP / Univesp TV",
+    "kind": "Videoaula",
+    "tracks": [
+      "enem"
+    ],
+    "subjects": [
+      "natureza"
+    ],
+    "url": "https://youtu.be/VCDdw1O_ze0",
+    "sourcePage": "https://univesp.br/univesp-tv-apresenta-novas-videoaulas-voltadas-ao-vestibular/",
+    "description": "Aula pública do projeto A USP Te Espera. Assista, faça suas anotações e pratique questões da área no Tello.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "video-21",
+    "title": "Células procarióticas e eucarióticas: qual a diferença?",
+    "provider": "USP / Univesp TV",
+    "kind": "Videoaula",
+    "tracks": [
+      "enem"
+    ],
+    "subjects": [
+      "natureza"
+    ],
+    "url": "https://youtu.be/IhSlD2YkrAQ",
+    "sourcePage": "https://univesp.br/univesp-tv-apresenta-novas-videoaulas-voltadas-ao-vestibular/",
+    "description": "Aula pública do projeto A USP Te Espera. Assista, faça suas anotações e pratique questões da área no Tello.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "video-22",
+    "title": "Fotossíntese e nutrição vegetal",
+    "provider": "USP / Univesp TV",
+    "kind": "Videoaula",
+    "tracks": [
+      "enem"
+    ],
+    "subjects": [
+      "natureza"
+    ],
+    "url": "https://youtu.be/8syK5BSvp80",
+    "sourcePage": "https://univesp.br/univesp-tv-apresenta-novas-videoaulas-voltadas-ao-vestibular/",
+    "description": "Aula pública do projeto A USP Te Espera. Assista, faça suas anotações e pratique questões da área no Tello.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "video-23",
+    "title": "Genética: Leis de Mendel",
+    "provider": "USP / Univesp TV",
+    "kind": "Videoaula",
+    "tracks": [
+      "enem"
+    ],
+    "subjects": [
+      "natureza"
+    ],
+    "url": "https://youtu.be/LW-Bta21cBw",
+    "sourcePage": "https://univesp.br/univesp-tv-apresenta-novas-videoaulas-voltadas-ao-vestibular/",
+    "description": "Aula pública do projeto A USP Te Espera. Assista, faça suas anotações e pratique questões da área no Tello.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "video-24",
+    "title": "Respiração celular",
+    "provider": "USP / Univesp TV",
+    "kind": "Videoaula",
+    "tracks": [
+      "enem"
+    ],
+    "subjects": [
+      "natureza"
+    ],
+    "url": "https://youtu.be/R5FKhuRjJPo",
+    "sourcePage": "https://univesp.br/univesp-tv-apresenta-novas-videoaulas-voltadas-ao-vestibular/",
+    "description": "Aula pública do projeto A USP Te Espera. Assista, faça suas anotações e pratique questões da área no Tello.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "video-25",
+    "title": "Introdução aos vetores e escalares",
+    "provider": "USP / Univesp TV",
+    "kind": "Videoaula",
+    "tracks": [
+      "enem"
+    ],
+    "subjects": [
+      "natureza"
+    ],
+    "url": "https://youtu.be/d0EZTVVBHG4",
+    "sourcePage": "https://univesp.br/univesp-tv-apresenta-novas-videoaulas-voltadas-ao-vestibular/",
+    "description": "Aula pública do projeto A USP Te Espera. Assista, faça suas anotações e pratique questões da área no Tello.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "video-26",
+    "title": "Equações e gráficos",
+    "provider": "USP / Univesp TV",
+    "kind": "Videoaula",
+    "tracks": [
+      "enem"
+    ],
+    "subjects": [
+      "natureza"
+    ],
+    "url": "https://youtu.be/3Kt5ekGnhnE",
+    "sourcePage": "https://univesp.br/univesp-tv-apresenta-novas-videoaulas-voltadas-ao-vestibular/",
+    "description": "Aula pública do projeto A USP Te Espera. Assista, faça suas anotações e pratique questões da área no Tello.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "video-27",
+    "title": "Conjuntos",
+    "provider": "USP / Univesp TV",
+    "kind": "Videoaula",
+    "tracks": [
+      "enem"
+    ],
+    "subjects": [
+      "matematica"
+    ],
+    "url": "https://youtu.be/vaJCsCE8qjE",
+    "sourcePage": "https://univesp.br/univesp-tv-apresenta-novas-videoaulas-voltadas-ao-vestibular/",
+    "description": "Aula pública do projeto A USP Te Espera. Assista, faça suas anotações e pratique questões da área no Tello.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "video-28",
+    "title": "Fatoração",
+    "provider": "USP / Univesp TV",
+    "kind": "Videoaula",
+    "tracks": [
+      "enem"
+    ],
+    "subjects": [
+      "matematica"
+    ],
+    "url": "https://youtu.be/5WHPPBFIa4Y",
+    "sourcePage": "https://univesp.br/univesp-tv-apresenta-novas-videoaulas-voltadas-ao-vestibular/",
+    "description": "Aula pública do projeto A USP Te Espera. Assista, faça suas anotações e pratique questões da área no Tello.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "video-29",
+    "title": "Trinômio do segundo grau",
+    "provider": "USP / Univesp TV",
+    "kind": "Videoaula",
+    "tracks": [
+      "enem"
+    ],
+    "subjects": [
+      "matematica"
+    ],
+    "url": "https://youtu.be/le8gnmJthXk",
+    "sourcePage": "https://univesp.br/univesp-tv-apresenta-novas-videoaulas-voltadas-ao-vestibular/",
+    "description": "Aula pública do projeto A USP Te Espera. Assista, faça suas anotações e pratique questões da área no Tello.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "video-30",
+    "title": "Funções II: Exponencial e logarítmica",
+    "provider": "USP / Univesp TV",
+    "kind": "Videoaula",
+    "tracks": [
+      "enem"
+    ],
+    "subjects": [
+      "matematica"
+    ],
+    "url": "https://youtu.be/WipaV3CawKU",
+    "sourcePage": "https://univesp.br/univesp-tv-apresenta-novas-videoaulas-voltadas-ao-vestibular/",
+    "description": "Aula pública do projeto A USP Te Espera. Assista, faça suas anotações e pratique questões da área no Tello.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "video-31",
+    "title": "Dos Átomos aos Elementos Químicos",
+    "provider": "USP / Univesp TV",
+    "kind": "Videoaula",
+    "tracks": [
+      "enem"
+    ],
+    "subjects": [
+      "natureza"
+    ],
+    "url": "https://youtu.be/FdJS-RspUkY",
+    "sourcePage": "https://univesp.br/univesp-tv-apresenta-novas-videoaulas-voltadas-ao-vestibular/",
+    "description": "Aula pública do projeto A USP Te Espera. Assista, faça suas anotações e pratique questões da área no Tello.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "video-32",
+    "title": "Os elementos e a tabela periódica",
+    "provider": "USP / Univesp TV",
+    "kind": "Videoaula",
+    "tracks": [
+      "enem"
+    ],
+    "subjects": [
+      "natureza"
+    ],
+    "url": "https://youtu.be/up1NJEG9ZHc",
+    "sourcePage": "https://univesp.br/univesp-tv-apresenta-novas-videoaulas-voltadas-ao-vestibular/",
+    "description": "Aula pública do projeto A USP Te Espera. Assista, faça suas anotações e pratique questões da área no Tello.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "video-33",
+    "title": "Dos elementos químicos às substâncias químicas: Ligação covalente não polarizada",
+    "provider": "USP / Univesp TV",
+    "kind": "Videoaula",
+    "tracks": [
+      "enem"
+    ],
+    "subjects": [
+      "natureza"
+    ],
+    "url": "https://youtu.be/QkHi0PqVEew",
+    "sourcePage": "https://univesp.br/univesp-tv-apresenta-novas-videoaulas-voltadas-ao-vestibular/",
+    "description": "Aula pública do projeto A USP Te Espera. Assista, faça suas anotações e pratique questões da área no Tello.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "video-34",
+    "title": "Dos elementos químicos às substâncias químicas IV: Ligações iônica e metálica",
+    "provider": "USP / Univesp TV",
+    "kind": "Videoaula",
+    "tracks": [
+      "enem"
+    ],
+    "subjects": [
+      "natureza"
+    ],
+    "url": "https://youtu.be/OhE8PO8sda4",
+    "sourcePage": "https://univesp.br/univesp-tv-apresenta-novas-videoaulas-voltadas-ao-vestibular/",
+    "description": "Aula pública do projeto A USP Te Espera. Assista, faça suas anotações e pratique questões da área no Tello.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "video-35",
+    "title": "Fundamentos da Química do Carbono",
+    "provider": "USP / Univesp TV",
+    "kind": "Videoaula",
+    "tracks": [
+      "enem"
+    ],
+    "subjects": [
+      "natureza"
+    ],
+    "url": "https://youtu.be/NbytojBmDQ0",
+    "sourcePage": "https://univesp.br/univesp-tv-apresenta-novas-videoaulas-voltadas-ao-vestibular/",
+    "description": "Aula pública do projeto A USP Te Espera. Assista, faça suas anotações e pratique questões da área no Tello.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "matriz",
+    "title": "Matriz de referência do ENEM",
+    "provider": "INEP",
+    "kind": "Documento",
+    "tracks": [
+      "enem"
+    ],
+    "subjects": [
+      "all"
+    ],
+    "url": "https://www.gov.br/inep/pt-br/areas-de-atuacao/avaliacao-e-exames-educacionais/enem/outros-documentos",
+    "description": "Confira competências, habilidades e objetos de conhecimento das quatro áreas.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "redacao",
+    "title": "Cartilha da redação 2026",
+    "provider": "INEP",
+    "kind": "Documento",
+    "tracks": [
+      "enem"
+    ],
+    "subjects": [
+      "redacao"
+    ],
+    "url": "https://www.gov.br/inep/pt-br/centrais-de-conteudo/acervo-linha-editorial/publicacoes-institucionais/avaliacoes-e-exames-da-educacao-basica/a-redacao-do-enem-2026-cartilha-do-a-participante",
+    "description": "Estude as cinco competências, os critérios e os exemplos antes de escrever e revisar sua redação.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "mat-univesp",
+    "title": "Matemática elementar · sequência de aulas",
+    "provider": "Univesp",
+    "kind": "Curso",
+    "tracks": [
+      "enem",
+      "pmpe"
+    ],
+    "subjects": [
+      "matematica",
+      "logica"
+    ],
+    "url": "https://cursos.univesp.br/courses/1051/modules",
+    "description": "Sequência pública de conteúdos de matemática. Use os vídeos e materiais; atividades institucionais podem exigir acesso de aluno.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "cert",
+    "title": "Segurança na internet · fascículos",
+    "provider": "CERT.br / NIC.br",
+    "kind": "Guia",
+    "tracks": [
+      "pmpe"
+    ],
+    "subjects": [
+      "informatica"
+    ],
+    "url": "https://cartilha.cert.br/",
+    "description": "Leia os fascículos de senhas, autenticação, golpes e backup. Depois resolva os exercícios de informática.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "excel",
+    "title": "Referências relativas, absolutas e mistas",
+    "provider": "Microsoft",
+    "kind": "Guia",
+    "tracks": [
+      "pmpe"
+    ],
+    "subjects": [
+      "informatica"
+    ],
+    "url": "https://support.microsoft.com/pt-br/excel/switch-between-relative-absolute-and-mixed-references",
+    "description": "Pratique a cópia de fórmulas e confira quais linhas e colunas se deslocam.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "cf",
+    "title": "Constituição Federal · texto oficial",
+    "provider": "Planalto",
+    "kind": "Lei",
+    "tracks": [
+      "pmpe"
+    ],
+    "subjects": [
+      "constitucional",
+      "direito-oficial"
+    ],
+    "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm",
+    "description": "Leia direitos e garantias, Administração Pública e segurança pública. Confira a redação vigente na fonte.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "estatuto",
+    "title": "Estatuto dos Militares de Pernambuco · Lei 6.783/1974",
+    "provider": "ALEPE",
+    "kind": "Lei",
+    "tracks": [
+      "pmpe"
+    ],
+    "subjects": [
+      "legislacao-pmpe"
+    ],
+    "url": "https://legis.alepe.pe.gov.br/texto.aspx?id=1032&tipo=TEXTOATUALIZADO",
+    "description": "Texto atualizado pela ALEPE. Estude hierarquia, disciplina, deveres, direitos e situações funcionais.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "normas",
+    "title": "Normas estaduais · PMPE Lex",
+    "provider": "Polícia Militar de Pernambuco",
+    "kind": "Lei",
+    "tracks": [
+      "pmpe"
+    ],
+    "subjects": [
+      "legislacao-pmpe",
+      "direito-oficial"
+    ],
+    "url": "https://www.pm.pe.gov.br/decretos-pmpe-legis/",
+    "description": "Índice oficial com Código Disciplinar, Estatuto e outras normas. Delimite a leitura pelo edital do seu cargo.",
+    "verifiedAt": "2026-10-05"
+  },
+  {
+    "id": "direitos",
+    "title": "Declaração Universal dos Direitos Humanos",
+    "provider": "Nações Unidas",
+    "kind": "Documento",
+    "tracks": [
+      "pmpe"
+    ],
+    "subjects": [
+      "direitos-humanos"
+    ],
+    "url": "https://www.un.org/en/about-us/universal-declaration-of-human-rights",
+    "description": "Texto oficial com acesso a traduções. Relacione dignidade, igualdade e proteção contra discriminação.",
+    "verifiedAt": "2026-10-05",
+    "verificationNote": "Não foi possível revalidar o acesso automaticamente nesta consulta."
+  },
+  {
+    "id": "fundaj",
+    "title": "Pesquisa Escolar · História e cultura de Pernambuco",
+    "provider": "Fundação Joaquim Nabuco",
+    "kind": "Acervo",
+    "tracks": [
+      "pmpe"
+    ],
+    "subjects": [
+      "historia-pe"
+    ],
+    "url": "https://pesquisaescolar.fundaj.gov.br/",
+    "description": "Consulte verbetes sobre Pernambuco para contextualizar os temas das aulas e das provas históricas.",
+    "verifiedAt": "2026-10-05",
+    "verificationNote": "Não foi possível revalidar o acesso automaticamente nesta consulta."
+  }
+]

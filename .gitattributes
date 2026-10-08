@@ -16,3 +16,5 @@
 *.woff binary
 *.woff2 binary
 *.ttf binary
+
+*.pdf binary

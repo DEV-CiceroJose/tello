@@ -38,6 +38,7 @@ export function TelloApp() {
       key={`${user?.uid || "local"}:${track}`}
       track={track}
       tab={search.tab || "overview"}
+      exam={search.exam || "all"}
       user={user}
       profile={profile}
       authLoading={loading}
@@ -46,7 +47,7 @@ export function TelloApp() {
     />
   );
 }
-function StudyWorkspace({ track, tab, user, profile, authLoading, login, logout }) {
+function StudyWorkspace({ track, tab, exam, user, profile, authLoading, login, logout }) {
   const navigate = useNavigate();
   const { progress, update, status, ready, retry } = useProgress(user?.uid, track);
   const { questions, catalogError } = useCatalog(track, user?.uid);
@@ -61,12 +62,12 @@ function StudyWorkspace({ track, tab, user, profile, authLoading, login, logout 
   const [focus, setFocus] = useState({ remaining: 25 * 60, running: false, endsAt: 0 });
   const stats = getStats(progress);
   const info = TRACKS[track];
-  const go = (next, subject = "all", lessonId = "all") => {
+  const go = (next, subject = "all", lessonId = "all", examId) => {
     setFilter(subject);
     setLessonFilter(lessonId);
     setQuery("");
     setMobile(false);
-    navigate({ to: "/", search: { track, tab: next } });
+    navigate({ to: "/", search: { track, tab: next, exam: examId } });
   };
   useEffect(() => {
     if (!focus.running) return;
@@ -307,6 +308,7 @@ function StudyWorkspace({ track, tab, user, profile, authLoading, login, logout 
                   {...mainProps}
                   initialSubject={filter}
                   initialLesson={lessonFilter}
+                  initialExam={exam}
                   catalogError={catalogError}
                 />
               )}
@@ -428,9 +430,10 @@ function StudyWorkspace({ track, tab, user, profile, authLoading, login, logout 
             </li>
           </ol>
           <p className="small-muted">
-            O acervo inicial é autoral e introdutório. PM-PE usa o edital de Soldado de 2023 como
-            referência; não cobre todas as etapas ou todo o conteúdo do concurso. Redações possuem
-            autoavaliação, sem nota oficial ou correção automática.
+            O acervo combina aulas autorais, provas oficiais e materiais de instituições públicas.
+            PM-PE usa o edital de Soldado de 2023 como referência; não cobre todas as etapas ou todo
+            o conteúdo do concurso. Redações possuem autoavaliação, sem nota oficial ou correção
+            automática.
           </p>
           <a className="text-link" href={info.reference.url} target="_blank" rel="noreferrer">
             {info.reference.label} ↗

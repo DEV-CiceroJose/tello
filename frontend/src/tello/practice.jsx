@@ -1,9 +1,12 @@
+import { ExamReader } from "./exam-reader";
+import EXAMS from "./exam-library.json";
+import { filterQuestions } from "./question-filters";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { LESSONS, SUBJECTS, TRACKS } from "./catalog";
 import { latestAttempts, createSimulation } from "./engine";
 import { Button, Icon, SectionHead, Empty, Picker, Meter } from "./ui";
-const difficultyLabels = { 1: "Básico", 2: "Intermediário", 3: "Avançado" };
+const difficultyLabels = { 0: "Não classificada", 1: "Básico", 2: "Intermediário", 3: "Avançado" };
 function attemptFor(q, selected, mode = "practice") {
   return {
     id: crypto.randomUUID(),
@@ -22,10 +25,14 @@ export function QuestionBank({
   questions,
   initialSubject,
   initialLesson,
+  initialExam = "all",
   catalogError,
 }) {
   const [subject, setSubject] = useState(initialSubject);
   const [lessonId, setLessonId] = useState(initialLesson);
+  const [origin, setOrigin] = useState("all");
+  const [role, setRole] = useState("all");
+  const [examId, setExamId] = useState(initialExam);
   const [difficulty, setDifficulty] = useState("all");
   const [status, setStatus] = useState("all");
   const [query, setQuery] = useState("");
@@ -34,20 +41,23 @@ export function QuestionBank({
   // Keep the current filter cohort stable after an answer, so feedback never disappears mid-read.
   const [cohort, setCohort] = useState(() => latestAttempts(progress.attempts));
   useEffect(() => {
+    setExamId(initialExam);
     setSubject(initialSubject);
     setLessonId(initialLesson);
     setIndex(0);
-  }, [initialSubject, initialLesson]);
-  const filtered = questions.filter(
-    (q) =>
-      (subject === "all" || q.subject === subject) &&
-      (lessonId === "all" || q.lessonId === lessonId) &&
-      (difficulty === "all" || q.difficulty === Number(difficulty)) &&
-      (status === "all" ||
-        (status === "new" && !cohort[q.id]) ||
-        (status === "wrong" && cohort[q.id] && !cohort[q.id].correct)) &&
-      q.stem.toLowerCase().includes(query.toLowerCase()),
-  );
+  }, [initialSubject, initialLesson, initialExam]);
+  const filtered = filterQuestions(questions, {
+    subject,
+    lessonId,
+    difficulty,
+    origin,
+    role,
+    examId,
+    status,
+    query,
+    attempts: cohort,
+  });
+  const officialCount = questions.filter((q) => q.origin === "official").length;
   const safeIndex = Math.min(index, Math.max(0, filtered.length - 1));
   const question = filtered[safeIndex];
   const change = (setter) => (value) => {
@@ -60,7 +70,7 @@ export function QuestionBank({
       <SectionHead
         eyebrow={`PRÁTICA · ${TRACKS[track].name}`}
         title="É praticando que se aprende."
-        description={`${questions.length} questões autorais comentadas. Entenda o raciocínio por trás de cada resposta.`}
+        description={`${questions.length} questões: ${questions.length - officialCount} autorais comentadas e ${officialCount} de provas oficiais, corrigidas pelo gabarito. Questões anuladas não entram na pontuação.`}
       />
       {catalogError && (
         <div className="notice warning">
@@ -68,7 +78,44 @@ export function QuestionBank({
           disponível.
         </div>
       )}
+      {track === "pmpe" && (
+        <p className="notice">
+          O total reúne preparação autoral, provas históricas de Soldado e provas complementares de
+          Oficial. Use o filtro de cargo para separar seus estudos.
+        </p>
+      )}
       <div className="question-filters">
+        <Picker
+          label="Acervo"
+          value={origin}
+          onChange={change(setOrigin)}
+          options={[
+            { value: "all", label: "Todo o acervo" },
+            { value: "authored", label: "Autorais comentadas" },
+            { value: "official", label: "Provas oficiais · gabarito" },
+          ]}
+        />
+        <Picker
+          label="Prova / ano"
+          value={examId}
+          onChange={change(setExamId)}
+          options={[
+            { value: "all", label: "Todas as provas" },
+            ...EXAMS.filter((e) => e.track === track).map((e) => ({ value: e.id, label: e.title })),
+          ]}
+        />
+        {track === "pmpe" && (
+          <Picker
+            label="Cargo"
+            value={role}
+            onChange={change(setRole)}
+            options={[
+              { value: "all", label: "Soldado e Oficial" },
+              { value: "Soldado", label: "Soldado" },
+              { value: "Oficial", label: "Oficial · complementar" },
+            ]}
+          />
+        )}
         <Picker
           label="Disciplina"
           value={subject}
@@ -124,7 +171,7 @@ export function QuestionBank({
             aria-label="Buscar questões"
             value={query}
             onChange={(e) => change(setQuery)(e.target.value)}
-            placeholder="Buscar no enunciado"
+            placeholder="Buscar por enunciado, prova ou número"
           />
         </div>
       </div>
@@ -209,6 +256,7 @@ function QuestionCard({
         </span>
       </div>
       <h2>{q.stem}</h2>
+      {q.origin === "official" && <ExamReader question={q} showAnswer={showAnswer} />}
       <fieldset className="answer-options" disabled={showAnswer}>
         <legend className="sr-only">Selecione uma alternativa</legend>
         {q.options.map((option, i) => (
@@ -257,7 +305,7 @@ function QuestionCard({
             {current === q.answer
               ? "Muito bem! Raciocínio em dia."
               : current == null
-                ? "Questão não respondida. Veja a resolução."
+                ? "Questão não respondida. Confira a resposta."
                 : "Mais uma oportunidade de aprender."}
           </strong>
           <p>
@@ -270,6 +318,7 @@ function QuestionCard({
 }
 export function Simulations({ track, questions, progress, update }) {
   const [count, setCount] = useState("10");
+  const [simulationRole, setSimulationRole] = useState(track === "pmpe" ? "Soldado" : "all");
   const [session, setSession] = useState(progress.activeSimulation);
   const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState(progress.activeSimulation?.answers || {});
@@ -324,7 +373,10 @@ export function Simulations({ track, questions, progress, update }) {
     };
   }, [session]);
   const start = () => {
-    const selected = createSimulation(questions, Number(count));
+    const selected = createSimulation(
+      filterQuestions(questions, { role: simulationRole }),
+      Number(count),
+    );
     const seconds = selected.length * 180;
     const now = Date.now();
     finished.current = false;
@@ -350,7 +402,7 @@ export function Simulations({ track, questions, progress, update }) {
         <SectionHead
           eyebrow="SIMULADO EM ANDAMENTO"
           title="Um desafio de cada vez."
-          description="As respostas comentadas aparecem quando você finalizar."
+          description="O gabarito e os comentários disponíveis aparecem ao finalizar."
         />
         <div className="exam-toolbar">
           <strong>
@@ -476,7 +528,7 @@ export function Simulations({ track, questions, progress, update }) {
       <SectionHead
         eyebrow={`TREINO COM TEMPO · ${TRACKS[track].name}`}
         title="Prepare também a sua confiança."
-        description="Simulados reduzidos com disciplinas variadas, cronômetro e revisão comentada."
+        description="Simulados reduzidos com disciplinas variadas, cronômetro e revisão das respostas."
       />
       <section className="simulation-start">
         <div className="simulation-illustration">
@@ -494,6 +546,18 @@ export function Simulations({ track, questions, progress, update }) {
             Três minutos por questão. Navegue entre as perguntas e veja o resultado completo ao
             finalizar.
           </p>
+          {track === "pmpe" && (
+            <Picker
+              label="Cargo do simulado"
+              value={simulationRole}
+              onChange={setSimulationRole}
+              options={[
+                { value: "Soldado", label: "Soldado" },
+                { value: "Oficial", label: "Oficial · complementar" },
+                { value: "all", label: "Ambos os cargos" },
+              ]}
+            />
+          )}
           <Picker
             label="Tamanho do simulado"
             value={count}

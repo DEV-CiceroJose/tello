@@ -36,3 +36,6 @@ biodoraia-frontend.zip
 *.njsproj
 *.sln
 *.sw?
+
+# Generated PDF.js decoder and font assets
+frontend/public/pdfjs/

@@ -1,3 +1,4 @@
+import { ResourceLibrary } from "./resource-library";
 import { useEffect, useState } from "react";
 import {
   Dialog,
@@ -9,7 +10,17 @@ import {
 import { toast } from "sonner";
 import { SUBJECTS, LESSONS, TRACKS } from "./catalog";
 import { Icon, Button, SectionHead, Empty, downloadFile } from "./ui";
-export function Materials({ track, progress, initialSubject, query, setQuery, openLesson }) {
+export function Materials({
+  track,
+  progress,
+  initialSubject,
+  query,
+  setQuery,
+  openLesson,
+  questions,
+  go,
+}) {
+  const [view, setView] = useState("roadmap");
   const [subject, setSubject] = useState(initialSubject);
   const [savedOnly, setSavedOnly] = useState(false);
   useEffect(() => setSubject(initialSubject), [initialSubject]);
@@ -34,8 +45,28 @@ export function Materials({ track, progress, initialSubject, query, setQuery, op
       <SectionHead
         eyebrow={`BIBLIOTECA · ${TRACKS[track].name}`}
         title="Conhecimento que fica."
-        description={`${all.length} aulas autorais para construir sua base, com exemplos e questões relacionadas.`}
+        description={`${all.length} aulas Tello, roteiro por área, materiais de instituições públicas e provas anteriores para praticar.`}
       />
+      <div className="library-tabs" aria-label="Seções da biblioteca">
+        {[
+          ["roadmap", "Roteiro por área"],
+          ["lessons", "Aulas Tello"],
+          ["resources", "Livros e videoaulas"],
+          ["exams", "Provas anteriores"],
+        ].map(([id, label]) => (
+          <button
+            key={id}
+            className={view === id ? "active" : ""}
+            aria-pressed={view === id}
+            onClick={() => {
+              setView(id);
+              setSavedOnly(false);
+            }}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
       <div className="filter-toolbar">
         <div className="search-field">
           <Icon name="Search" size={18} />
@@ -50,7 +81,10 @@ export function Materials({ track, progress, initialSubject, query, setQuery, op
           icon="Bookmark"
           variant={savedOnly ? "" : "secondary"}
           aria-pressed={savedOnly}
-          onClick={() => setSavedOnly(!savedOnly)}
+          onClick={() => {
+            setView("lessons");
+            setSavedOnly(!savedOnly);
+          }}
         >
           Meus salvos
         </Button>
@@ -65,54 +99,83 @@ export function Materials({ track, progress, initialSubject, query, setQuery, op
             className={subject === s.id ? "active" : ""}
             onClick={() => setSubject(s.id)}
           >
-            {s.name} · {all.filter((lesson) => lesson.subject === s.id).length}
+            {s.name}
           </button>
         ))}
       </div>
-      <div className="results-label">
-        {filtered.length} {filtered.length === 1 ? "material encontrado" : "materiais encontrados"}
-      </div>
-      {filtered.length ? (
-        <div className="lesson-grid">
-          {filtered.map((l, i) => {
-            const s = SUBJECTS.find((s) => s.id === l.subject);
-            const done = progress.completedLessons.includes(l.id);
-            return (
-              <button key={l.id} className="lesson-card" onClick={() => openLesson(l)}>
-                <div className={`lesson-cover ${s.color}`}>
-                  <Icon name={s.icon} size={44} />
-                  <span className="cover-number">{String(i + 1).padStart(2, "0")}</span>
-                  <span className="lesson-type">GUIA DE ESTUDO</span>
-                </div>
-                <div className="lesson-card-body">
-                  <span className={`subject-label ${s.color}`}>{s.name}</span>
-                  <h2>{l.title}</h2>
-                  <p>{l.subtitle}</p>
-                  <div className="lesson-meta">
-                    <span>
-                      <Icon name="Clock3" size={14} />
-                      {l.minutes} min de estudo
-                    </span>
-                    <span>
-                      {done ? (
-                        <>
-                          <Icon name="CircleCheck" size={15} />
-                          Concluído
-                        </>
-                      ) : (
-                        <Icon name="ArrowUpRight" size={19} />
-                      )}
-                    </span>
-                  </div>
-                </div>
-              </button>
-            );
-          })}
+      {track === "enem" && view !== "lessons" && (
+        <div className="filter-chips">
+          <button
+            className={subject === "redacao" ? "active" : ""}
+            onClick={() => setSubject("redacao")}
+          >
+            Redação
+          </button>
         </div>
+      )}
+      {view !== "lessons" ? (
+        <ResourceLibrary
+          track={track}
+          subject={subject}
+          query={query}
+          questions={questions}
+          go={go}
+          view={view}
+          selectResources={(id) => {
+            setSubject(id);
+            setView("resources");
+            setQuery("");
+          }}
+        />
       ) : (
-        <Empty icon="SearchX" title="Ainda não encontramos esse material.">
-          Tente outro termo ou remova os filtros.
-        </Empty>
+        <>
+          <div className="results-label">
+            {filtered.length}{" "}
+            {filtered.length === 1 ? "material encontrado" : "materiais encontrados"}
+          </div>
+          {filtered.length ? (
+            <div className="lesson-grid">
+              {filtered.map((l, i) => {
+                const s = SUBJECTS.find((s) => s.id === l.subject);
+                const done = progress.completedLessons.includes(l.id);
+                return (
+                  <button key={l.id} className="lesson-card" onClick={() => openLesson(l)}>
+                    <div className={`lesson-cover ${s.color}`}>
+                      <Icon name={s.icon} size={44} />
+                      <span className="cover-number">{String(i + 1).padStart(2, "0")}</span>
+                      <span className="lesson-type">GUIA DE ESTUDO</span>
+                    </div>
+                    <div className="lesson-card-body">
+                      <span className={`subject-label ${s.color}`}>{s.name}</span>
+                      <h2>{l.title}</h2>
+                      <p>{l.subtitle}</p>
+                      <div className="lesson-meta">
+                        <span>
+                          <Icon name="Clock3" size={14} />
+                          {l.minutes} min de estudo
+                        </span>
+                        <span>
+                          {done ? (
+                            <>
+                              <Icon name="CircleCheck" size={15} />
+                              Concluído
+                            </>
+                          ) : (
+                            <Icon name="ArrowUpRight" size={19} />
+                          )}
+                        </span>
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          ) : (
+            <Empty icon="SearchX" title="Ainda não encontramos esse material.">
+              Tente outro termo ou remova os filtros.
+            </Empty>
+          )}
+        </>
       )}
       <div className="source-note">
         <Icon name="Info" size={18} />

@@ -3,6 +3,10 @@ import { TelloApp } from "@/tello/TelloApp";
 const tabs = ["overview", "plan", "materials", "questions", "simulations", "essay", "progress"];
 export const Route = createFileRoute("/")({
   validateSearch: (search) => ({
+    exam:
+      typeof search.exam === "string" && /^[a-z0-9-]{1,60}$/.test(search.exam)
+        ? search.exam
+        : undefined,
     track: search.track === "pmpe" ? "pmpe" : "enem",
     tab:
       tabs.includes(search.tab) && !(search.track === "pmpe" && search.tab === "essay")
