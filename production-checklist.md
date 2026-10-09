@@ -7,7 +7,8 @@ automaticamente pelo repositório.
 
 - preencher `frontend/.env.local` com a configuração pública do app Web;
 - confirmar que `VITE_FIRESTORE_DATABASE_ID` aponta para `biodoraia`;
-- cadastrar o domínio em Firebase Authentication;
+- no projeto Firebase `tello-31768`, abrir Authentication > Settings > Authorized domains e
+  cadastrar `tello-vrl4.onrender.com` (sem `https://` ou barra final);
 - cadastrar a chave reCAPTCHA Enterprise em `VITE_RECAPTCHA_ENTERPRISE_SITE_KEY`;
 - autenticar Firebase CLI e Wrangler somente no ambiente de deploy.
 - conceder a claim `teacher: true` somente às contas docentes autorizadas.

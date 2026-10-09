@@ -16,7 +16,6 @@ async function ensureStudentProfile(user) {
     const accountData = {
       email: user.email ?? existing.email ?? "",
       avatarUrl: user.photoURL ?? existing.avatarUrl ?? "",
-      lastLoginAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     };
     await setDoc(profileRef(user.uid), accountData, { merge: true });
@@ -32,7 +31,6 @@ async function ensureStudentProfile(user) {
   await setDoc(profileRef(user.uid), {
     ...profile,
     createdAt: serverTimestamp(),
-    lastLoginAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
   });
   return profile;

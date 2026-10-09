@@ -11,6 +11,7 @@ import {
 import { useAuth } from "@/components/auth/auth-provider";
 import { ProfileDialog } from "@/components/auth/profile-dialog";
 import { isFirebaseConfigured } from "@/lib/firebase";
+import { describeGoogleSignInError } from "@/services/auth-error";
 import { TRACKS, SUBJECTS, LESSONS } from "./catalog";
 import { getStats, dateKey } from "./engine";
 import { useProgress } from "./use-progress";
@@ -66,8 +67,9 @@ function TelloAccess({ user, profile, loading, login, logout, completeProfile })
     setError("");
     try {
       await login();
-    } catch {
-      setError("Não foi possível entrar. Confira sua conexão e tente novamente.");
+    } catch (signInError) {
+      console.error("Falha ao entrar com Google:", signInError);
+      setError(describeGoogleSignInError(signInError, window.location.hostname) || "");
     } finally {
       setBusy(false);
     }
