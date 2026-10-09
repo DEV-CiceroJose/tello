@@ -12,7 +12,16 @@ export async function getStudentProfile(uid) {
 }
 async function ensureStudentProfile(user) {
   const existing = await getStudentProfile(user.uid);
-  if (existing) return existing;
+  if (existing) {
+    const accountData = {
+      email: user.email ?? existing.email ?? "",
+      avatarUrl: user.photoURL ?? existing.avatarUrl ?? "",
+      lastLoginAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    };
+    await setDoc(profileRef(user.uid), accountData, { merge: true });
+    return { ...existing, email: accountData.email, avatarUrl: accountData.avatarUrl };
+  }
   const profile = {
     uid: user.uid,
     email: user.email ?? "",
@@ -23,6 +32,7 @@ async function ensureStudentProfile(user) {
   await setDoc(profileRef(user.uid), {
     ...profile,
     createdAt: serverTimestamp(),
+    lastLoginAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
   });
   return profile;

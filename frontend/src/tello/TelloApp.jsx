@@ -9,6 +9,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { useAuth } from "@/components/auth/auth-provider";
+import { ProfileDialog } from "@/components/auth/profile-dialog";
 import { isFirebaseConfigured } from "@/lib/firebase";
 import { TRACKS, SUBJECTS, LESSONS } from "./catalog";
 import { getStats, dateKey } from "./engine";
@@ -32,22 +33,117 @@ const navigation = [
 export function TelloApp() {
   const search = useSearch({ strict: false });
   const track = search.track === "pmpe" ? "pmpe" : "enem";
-  const { user, profile, loading, login, logout } = useAuth();
+  const { user, profile, loading, login, logout, completeProfile } = useAuth();
+  if (loading || !user || !profile?.profileCompleted) {
+    return (
+      <TelloAccess
+        user={user}
+        profile={profile}
+        loading={loading}
+        login={login}
+        logout={logout}
+        completeProfile={completeProfile}
+      />
+    );
+  }
   return (
     <StudyWorkspace
-      key={`${user?.uid || "local"}:${track}`}
+      key={`${user.uid}:${track}`}
       track={track}
       tab={search.tab || "overview"}
       exam={search.exam || "all"}
       user={user}
       profile={profile}
-      authLoading={loading}
-      login={login}
       logout={logout}
     />
   );
 }
-function StudyWorkspace({ track, tab, exam, user, profile, authLoading, login, logout }) {
+function TelloAccess({ user, profile, loading, login, logout, completeProfile }) {
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const signIn = async () => {
+    setBusy(true);
+    setError("");
+    try {
+      await login();
+    } catch {
+      setError("Não foi possível entrar. Confira sua conexão e tente novamente.");
+    } finally {
+      setBusy(false);
+    }
+  };
+  return (
+    <main className="tello-access">
+      <section className="access-card" aria-labelledby="access-title">
+        <div className="access-brand" aria-label="Tello">
+          <span className="brand-mark">
+            t<span />
+          </span>
+          tello<span className="brand-dot">.</span>
+        </div>
+        <span className="eyebrow">SEU ESPAÇO DE ESTUDOS</span>
+        <h1 id="access-title">Seu progresso merece acompanhar você.</h1>
+        <p>Entre para salvar planos, questões, simulados e redações com segurança na sua conta.</p>
+        <div className="access-benefits">
+          <span>
+            <Icon name="CloudCheck" /> Progresso sincronizado
+          </span>
+          <span>
+            <Icon name="ShieldCheck" /> Perfil privado
+          </span>
+          <span>
+            <Icon name="ChartNoAxesCombined" /> Histórico completo
+          </span>
+        </div>
+        {loading ? (
+          <div className="access-loading" role="status">
+            <Icon name="LoaderCircle" /> Verificando sua conta…
+          </div>
+        ) : (
+          <Button icon="LogIn" disabled={!isFirebaseConfigured || busy} onClick={signIn}>
+            {busy ? "Conectando…" : "Continuar com Google"}
+          </Button>
+        )}
+        {error && (
+          <p className="access-error" role="alert">
+            {error}
+          </p>
+        )}
+        {!isFirebaseConfigured && !loading && (
+          <p className="access-error" role="alert">
+            O acesso está temporariamente indisponível. A configuração do Firebase precisa ser
+            concluída.
+          </p>
+        )}
+        <small>Ao entrar pela primeira vez, seu cadastro é criado automaticamente.</small>
+      </section>
+      <aside className="access-visual" aria-hidden="true">
+        <span className="access-orbit orbit-one" />
+        <span className="access-orbit orbit-two" />
+        <div className="access-quote">
+          <Icon name="Sparkles" />
+          <strong>Um passo de cada vez.</strong>
+          <p>Organize sua rotina, pratique e acompanhe cada avanço.</p>
+        </div>
+      </aside>
+      <ProfileDialog
+        open={Boolean(user && profile && !profile.profileCompleted)}
+        defaultName={profile?.name || user?.displayName || ""}
+        onSubmit={completeProfile}
+        onCompleted={() => undefined}
+      />
+      {user && !profile && !loading && (
+        <div className="access-recovery" role="alert">
+          <p>Não foi possível carregar seu perfil.</p>
+          <Button variant="secondary" onClick={logout}>
+            Sair e tentar outra conta
+          </Button>
+        </div>
+      )}
+    </main>
+  );
+}
+function StudyWorkspace({ track, tab, exam, user, profile, logout }) {
   const navigate = useNavigate();
   const { progress, update, status, ready, retry } = useProgress(user?.uid, track);
   const { questions, catalogError } = useCatalog(track, user?.uid);
@@ -58,7 +154,6 @@ function StudyWorkspace({ track, tab, exam, user, profile, authLoading, login, l
   const [filter, setFilter] = useState("all");
   const [lessonFilter, setLessonFilter] = useState("all");
   const [query, setQuery] = useState("");
-  const [authBusy, setAuthBusy] = useState(false);
   const [focus, setFocus] = useState({ remaining: 25 * 60, running: false, endsAt: 0 });
   const stats = getStats(progress);
   const info = TRACKS[track];
@@ -83,19 +178,6 @@ function StudyWorkspace({ track, tab, exam, user, profile, authLoading, login, l
     }, 250);
     return () => clearInterval(timer);
   }, [focus.running, focus.endsAt, update]);
-  const signIn = async () => {
-    setAuthBusy(true);
-    try {
-      await login();
-      toast.success("Conta conectada. Seus estudos por conta ficam separados do modo local.");
-    } catch {
-      toast.error(
-        "Não foi possível entrar. Verifique o Google habilitado no Firebase e o domínio autorizado.",
-      );
-    } finally {
-      setAuthBusy(false);
-    }
-  };
   const labels = {
     local: "Salvo neste dispositivo",
     synced: "Sincronizado na sua conta",
@@ -209,7 +291,7 @@ function StudyWorkspace({ track, tab, exam, user, profile, authLoading, login, l
             </span>
             <span>
               <strong>{profile?.name || progress.name || "Estudante"}</strong>
-              <small>{user ? "Minha conta" : "Modo local"}</small>
+              <small>Minha conta</small>
             </span>
             <Icon name="ChevronsUpDown" size={15} />
           </button>
@@ -357,39 +439,22 @@ function StudyWorkspace({ track, tab, exam, user, profile, authLoading, login, l
             />
           </label>
           <div className="notice">
-            <Icon name={user ? "CloudCheck" : "Laptop"} />
+            <Icon name="CloudCheck" />
             <p>
-              {user
-                ? `Conectado como ${user.email}. O progresso desta conta é separado dos estudos locais.`
-                : "Seus estudos ficam salvos neste navegador. Entre para manter um histórico privado na nuvem. Dados locais não são transferidos automaticamente."}
+              Conectado como {user.email}. Seu progresso é salvo nesta conta e sincronizado entre
+              dispositivos.
             </p>
           </div>
-          {user ? (
-            <Button
-              variant="secondary"
-              disabled={status === "saving"}
-              onClick={async () => {
-                await logout();
-                setSettings(false);
-              }}
-            >
-              Sair da conta
-            </Button>
-          ) : (
-            <Button
-              icon="LogIn"
-              disabled={!isFirebaseConfigured || authBusy || authLoading}
-              onClick={signIn}
-            >
-              {authBusy ? "Conectando…" : "Entrar com Google"}
-            </Button>
-          )}
-          {!isFirebaseConfigured && (
-            <p className="small-muted">
-              A conexão com o Firebase aguarda a configuração do app Web. O modo local já está
-              disponível.
-            </p>
-          )}
+          <Button
+            variant="secondary"
+            disabled={status === "saving"}
+            onClick={async () => {
+              await logout();
+              setSettings(false);
+            }}
+          >
+            Sair da conta
+          </Button>
           <Button
             variant="secondary"
             icon="Download"

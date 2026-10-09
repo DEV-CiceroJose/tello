@@ -25,7 +25,7 @@ export function ProfileDialog({ open, defaultName = "", onSubmit, onCompleted })
   async function handleSubmit(event) {
     event.preventDefault();
     if (!name.trim() || !turma.trim()) {
-      setError("Preencha nome e turma para continuar.");
+      setError("Preencha seu nome e objetivo para continuar.");
       return;
     }
     setError(null);
@@ -45,7 +45,7 @@ export function ProfileDialog({ open, defaultName = "", onSubmit, onCompleted })
         <DialogHeader>
           <DialogTitle className="font-display text-xl">Complete seu cadastro</DialogTitle>
           <DialogDescription className="text-muted-foreground">
-            Primeiro acesso detectado. Só precisamos de duas informações para personalizar sua
+            Primeiro acesso detectado. Só precisamos do seu nome e objetivo para personalizar sua
             experiência.
           </DialogDescription>
         </DialogHeader>
@@ -64,12 +64,12 @@ export function ProfileDialog({ open, defaultName = "", onSubmit, onCompleted })
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="profile-turma">Turma</Label>
+            <Label htmlFor="profile-turma">Objetivo ou turma</Label>
             <Input
               id="profile-turma"
               value={turma}
               onChange={(e) => setTurma(e.target.value)}
-              placeholder="Ex.: 3º ano B"
+              placeholder="Ex.: ENEM 2026, PM-PE ou 3º ano B"
             />
           </div>
 
