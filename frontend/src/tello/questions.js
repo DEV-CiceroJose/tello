@@ -1,3 +1,5 @@
+import OFFICIAL_QUESTIONS from "./official-questions.json";
+import FOUNDATION_QUESTIONS from "./foundation-questions.json";
 import { LESSONS } from "./catalog.js";
 import { EXPANDED_QUESTIONS } from "./expanded-content.js";
 import { VARIABLE_QUESTIONS } from "./variable-questions.js";
@@ -597,4 +599,10 @@ const initialQuestions = rows.map(
     };
   },
 );
-export const QUESTIONS = [...initialQuestions, ...EXPANDED_QUESTIONS, ...VARIABLE_QUESTIONS];
+export const QUESTIONS = [
+  ...initialQuestions,
+  ...EXPANDED_QUESTIONS,
+  ...VARIABLE_QUESTIONS,
+  ...FOUNDATION_QUESTIONS,
+  ...OFFICIAL_QUESTIONS,
+];

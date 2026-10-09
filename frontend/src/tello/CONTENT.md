@@ -1,6 +1,8 @@
 # Acervo do Tello
 
-O acervo local contém 57 aulas e 369 questões autorais comentadas: 231 para o ENEM e 138 para a PM-PE. As questões são de treino, não reproduções oficiais de provas. As aulas estão divididas nas quatro áreas do ENEM e em sete áreas da PM-PE, incluindo legislação estadual.
+O acervo local contém 57 aulas e 1.343 questões: 766 ENEM (231 autorais + 535 oficiais) e 577 PM-PE (258 autorais + 319 oficiais). As questões oficiais são apresentadas no caderno original e corrigidas pelo gabarito; não são anunciadas como resoluções comentadas. PM-PE inclui Soldado e Oficial, separáveis pelo filtro de cargo. O catálogo continua extensível pelo Firebase e pelos arquivos versionados.
+
+A biblioteca inclui 20 apostilas da CECIERJ, 16 videoaulas USP/Univesp e 10 fontes complementares. Veja [a pesquisa e os critérios de importação](../../../research/CONTENT-RESEARCH.md).
 
 ## Como ampliar
 

@@ -267,7 +267,9 @@ export function StudyPlan({ track, progress, update, openLesson, go }) {
               onChange={setPriority}
               options={[
                 { value: "balanced", label: "Equilibrar e priorizar minhas dificuldades" },
-                ...SUBJECTS.filter((s) => s.track === track).map((s) => ({
+                ...SUBJECTS.filter(
+                  (s) => s.track === track && LESSONS.some((l) => l.subject === s.id),
+                ).map((s) => ({
                   value: s.id,
                   label: s.name,
                 })),

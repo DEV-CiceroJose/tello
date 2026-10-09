@@ -53,6 +53,30 @@ export const TRACKS = {
 };
 export const SUBJECTS = [
   {
+    id: "geografia-pe",
+    track: "pmpe",
+    name: "Geografia · provas anteriores",
+    icon: "Globe2",
+    color: "green",
+    description: "Geografia nas edições históricas da PM-PE.",
+  },
+  {
+    id: "ingles-pmpe",
+    track: "pmpe",
+    name: "Inglês · Oficial",
+    icon: "Languages",
+    color: "purple",
+    description: "Leitura em língua inglesa para Oficial.",
+  },
+  {
+    id: "direito-oficial",
+    track: "pmpe",
+    name: "Direito · Oficial",
+    icon: "Scale",
+    color: "orange",
+    description: "Administrativo, civil, penal, processual e militar nas provas de Oficial.",
+  },
+  {
     id: "matematica",
     track: "enem",
     name: "Matemática",

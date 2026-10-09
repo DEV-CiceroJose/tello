@@ -1,3 +1,4 @@
+import EXAMS from "./exam-library.json";
 import { useEffect, useState } from "react";
 import {
   collection,
@@ -14,6 +15,20 @@ import { QUESTIONS } from "./questions";
 export function isValidQuestion(q) {
   return (
     q &&
+    (q.origin !== "official" ||
+      (EXAMS.some(
+        (e) =>
+          e.id === q.examId &&
+          e.track === q.track &&
+          q.location?.page >= 1 &&
+          q.location.page <= e.pageCount,
+      ) &&
+        Number.isFinite(q.location?.x) &&
+        Number.isFinite(q.location?.y) &&
+        q.location.x >= 0 &&
+        q.location.x < 1 &&
+        q.location.y >= 0 &&
+        q.location.y < 1)) &&
     typeof q.id === "string" &&
     ["enem", "pmpe"].includes(q.track) &&
     typeof q.subject === "string" &&
@@ -25,7 +40,7 @@ export function isValidQuestion(q) {
     q.answer >= 0 &&
     q.answer < 5 &&
     typeof q.explanation === "string" &&
-    [1, 2, 3].includes(q.difficulty)
+    [0, 1, 2, 3].includes(q.difficulty)
   );
 }
 export function useCatalog(track, uid) {
