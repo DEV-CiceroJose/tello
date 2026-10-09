@@ -230,7 +230,7 @@ function StudyWorkspace({ track, tab, exam, user, profile, authLoading, login, l
             <strong>{info.name}</strong>
           </div>
           <div className="topbar-right">
-            <span className="today-date">
+            <span className="today-date" suppressHydrationWarning>
               {new Intl.DateTimeFormat("pt-BR", { day: "numeric", month: "long" }).format(
                 new Date(),
               )}
